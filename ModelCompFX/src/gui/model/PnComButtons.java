@@ -29,11 +29,13 @@ public class PnComButtons extends VBox {
 	private Button insert ;
 	private Button see;
 	
+	Button first;
+	
 	//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public PnComButtons(Stage stMain){                             
 		//сформувати необхідні gui-елементи 
 		selection = new Label("  0:0 " );  ///+ dbm.getRowCount());  
-		Button first = new Button("|<");
+		first = new Button("|<");
 		Button prev = new Button("<");
 		Button next = new Button(">");
 		Button last = new Button(">|");
@@ -72,6 +74,22 @@ public class PnComButtons extends VBox {
 		first.setOnAction(e->pComTable.showTable(false, 1));
 		add.setOnAction(e->addCommand(edCommand));
 		edit.setOnAction(e->editCommand(edCommand));
+		rename.setOnAction(e->testingData());
+	}
+
+	private void testingData(){
+		
+		System.out.println("Testing data");
+		/*
+		System.out.println("Size pComTable =" + pComTable.widthProperty().get());
+		System.out.println("Size tableState =" + pComTable.tableState.widthProperty().get());
+		System.out.println("column 4 minW = " + pComTable.tableState.getColumns().get(4).getMinWidth() +
+				" prefW = "+ pComTable.tableState.getColumns().get(4).getPrefWidth() +
+				" maxW = "+ pComTable.tableState.getColumns().get(4).getMaxWidth());
+		System.out.println("Width min=" + pComTable.tableState.getMinWidth() + " perf=" + 
+				pComTable.tableState.getPrefWidth() + " max=" + pComTable.tableState.getMaxWidth());
+		*/
+		System.out.println("first prev height=" + first.getPrefHeight());
 	}
 	public void setEnv(FrMain owner, PnDescription pDescription, PnComTable table){   
 		fMain = owner;  

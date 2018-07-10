@@ -45,8 +45,8 @@ public class PnModButtons extends VBox {
 		Button prev = new Button("<");
 		Button next = new Button(">");
 		Button last = new Button(">|");
-		version = new Label(Parameter.getVersion());  
-		section = new Label(""); 
+		version = new Label(Parameter.getVersion()+ " ttt");  
+		section = new Label("Test"); 
 		test = new Button("Перевірка");
 		add = new Button("Новий");
 		addBase = new Button("Новий на основі");	
@@ -69,16 +69,21 @@ public class PnModButtons extends VBox {
 		evWin.setScene(scene);
 		
 	
-		HBox select = new HBox();
-		select.getChildren().addAll(first,prev,selection, next,last);
+		HBox select = new HBox(5);
+		TextField empty = new TextField();
+		empty.setVisible(false);
+		select.getChildren().addAll(first,prev,selection, next,last,empty);
 		if(Parameter.getRegime().equals("teacher")){
 			select.getChildren().add(section);
 			section.setText(Parameter.getSection());
 		} 
 		select.getChildren().add(version);
-		HBox fileBox = new HBox();
+		HBox.setHgrow(empty,Priority.ALWAYS);
+		HBox fileBox = new HBox(5);
 		fileBox.getChildren().addAll(file, nmFile,output,input);	
-		HBox buttons = new HBox();
+		HBox buttons = new HBox(5);
+		
+	
 		buttons.getChildren().addAll(test,add,addBase,delete,work,quit);
 		
 		getChildren().addAll(select,fileBox,buttons);
@@ -91,6 +96,7 @@ public class PnModButtons extends VBox {
 		next.setOnAction(e->{env.getNext(); selected=env.getPos();});
 		last.setOnAction(e->{env.getLast(); selected=env.getPos();});
 		
+		//delete.setOnAction(e->forTesting());
 		work.setOnAction(e -> beginWork(evWin));
 		/*
 		{
@@ -113,6 +119,9 @@ public class PnModButtons extends VBox {
 		
 		*/
 	}
+	
+	
+	
 	public void setEnv(FrMain fMain, PnDescription pDescription){   // !!!!!!!!!! ref !!!!!!!!!!!!!!!!!!!!!!
 		this.fMain = fMain;
 		this.pDescription = pDescription;

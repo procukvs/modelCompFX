@@ -18,11 +18,11 @@ public class PnModel extends BorderPane {
 		//сформувати необхідні gui-елементи 
 		pDescription = new PnDescription(true);
 		pComTable = new PnComTable();
-		pComTable.setStyle("-fx-padding: 10;" +
+		pComTable.setStyle("-fx-padding: 3;" +
 				"-fx-border-style: solid inside;" +
-				"-fx-border-width: 2;" +
-				"-fx-border-insets: 5;" +
-				"-fx-border-radius: 5;" +
+				"-fx-border-width: 1;" +
+				"-fx-border-insets: 1;" +
+				//"-fx-border-radius: 5;" +
 				"-fx-border-color: blue;");
 		pComButtons = new PnComButtons(stMain); // 
 		

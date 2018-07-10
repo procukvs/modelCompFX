@@ -88,7 +88,13 @@ public class FrMain extends BorderPane {
 		
 		
 		//-------------------------------
-		pModel = new PnModel(stMain);          
+		pModel = new PnModel(stMain);    
+		pModel.setStyle("-fx-padding: 3;" +
+				"-fx-border-style: solid inside; " + 
+				"-fx-border-width: 1;" +
+				"-fx-border-insets:1;" +
+				//"-fx-border-radius: 0;" +  //solid inside;" +
+				"-fx-border-color: blue;");
 		//-------------------------------
 		pParTable = new PnParTable (db);
 		pModButtons = new PnModButtons(stMain); 
@@ -123,8 +129,8 @@ public class FrMain extends BorderPane {
 		label.setVisible(false);
 		pModel.setVisible(false);
 		pParTable.setVisible(false);
-		pModButtons.setVisible(false);
-		pParButtons.setVisible(false);
+		pModButtons.setVisible(false); pModButtons.setManaged(false);
+		pParButtons.setVisible(false); pParButtons.setManaged(false);
 	}	
 	
 	private void setVisiblePane( String type) {
@@ -136,8 +142,8 @@ public class FrMain extends BorderPane {
 		label.setVisible(!close);
 		pModel.setVisible(model);
 		pParTable.setVisible(files);
-		pModButtons.setVisible(model);
-		pParButtons.setVisible(files);
+		pModButtons.setVisible(model); pModButtons.setManaged(model);
+		pParButtons.setVisible(files);pParButtons.setManaged(files);
 	}
 	
 	public void show(AllModels env){

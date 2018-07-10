@@ -94,7 +94,20 @@ public class StateP {
 				StateP rp = new StateP((State)model.program.get(j));
 				newL.add(rp);
 				
+			};
+			int k = table.getColumns().size();
+			final double p = 1.0/(k+3);//-0.001;
+			for(int j=0; j<k;j++){
+				if(j==k-3) table.getColumns().get(j).prefWidthProperty().bind(table.widthProperty().multiply(p*4));
+				else {
+					table.getColumns().get(j).prefWidthProperty().bind(table.widthProperty().multiply(p));
+					table.getColumns().get(j).setStyle("-fx-alignment: center");
+				}
+				table.getColumns().get(j).setResizable(false);
 			}
+			
+			//table.getColumns().get(1).setMaxWidth(50);
+			//table.getColumns().get(1).setResizable(false);
 			table.getItems().addAll(newL);
 		}
 	}

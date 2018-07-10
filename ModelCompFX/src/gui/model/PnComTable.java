@@ -3,6 +3,8 @@ package gui.model;
 import javafx.scene.layout.*;
 import java.util.*;
 import javafx.scene.control.*;
+import javafx.scene.*;
+import javafx.geometry.*;
 
 import model.*;
 import model.rec.*;
@@ -27,11 +29,29 @@ public class PnComTable extends BorderPane {
 		tableState=StateP.initTableView();
 		HBox tables = new HBox();
 		tables.getChildren().addAll(tableFunction, tableRule, tableState);
+		tables.setStyle("-fx-alignment: center");
 		setTop(label);
+		setAlignment(label, Pos.CENTER);
 		//setCenter(tableRule);
 		setCenter(tables);
+		
+		setWidthTable();
+	}
+	
+	
+	private void setWidthTable(){
+		
+		tableState.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		//tableState.setMaxWidth(Double.MAX_VALUE);
+		//tableState.setPrefWidth(Double.MAX_VALUE);
+		//tableState.setMinWidth(600);
+		tableState.minWidthProperty().bind(this.widthProperty().subtract(8));
+	
+		
 	}
 	public void setEnv(PnComButtons buttons){
+		System.out.println(this.getWidth());
+		//tableState.setMinWidth(500);
 	   	this.pComButtons = buttons;
 	    //int all = dbm.getRowCount();
 		int all = 0;
@@ -47,6 +67,10 @@ public class PnComTable extends BorderPane {
 		//else System.out.println("PnComTable: show="+env.getType()+"..model = "+model.id); // env.getPos());
 	}
 	
+	private void visible(Node n, boolean bv){
+		n.setVisible(false); n.setVisible(false);
+	}
+	
 	public void showTable(boolean update, int selected){
 		tableFunction.setVisible(false); tableRule.setVisible(false);
 		tableState.setVisible(false);
@@ -58,7 +82,7 @@ public class PnComTable extends BorderPane {
 		case "Algorithm": RuleP.setTableView(tableRule,(Algorithm)model); 
 			tableRule.setManaged(true);	tableRule.setVisible(true); break; 
 		case "Machine":   StateP.setTableView(tableState,(Machine)model); 
-			tableState.setManaged(true); tableState.setVisible(true);break; 
+			tableState.setManaged(true); tableState.setVisible(true);break;  //visible(tableState,true); break; //
 		}		
 		
 		//System.out.println("PnComTable.showTable: update="+update+"..selected="+selected);
