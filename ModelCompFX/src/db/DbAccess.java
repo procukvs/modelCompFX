@@ -11,8 +11,7 @@ import org.sqlite.*;
 import java.util.*;
 
 import main.*;
-import model.Algorithm;
-import model.Command;
+import model.*;
 //import model.Computer;          =========================================
 //import model.Derive;            =========================================
 //import model.Instruction;       =========================================
@@ -21,9 +20,8 @@ import model.Model;
 //import model.Post;              =========================================
 import model.Rule;
 //import model.State;             =========================================
-import model.calc.Calculus;     
-import model.calc.LambdaDecl;   
-import model.rec.Recursive;     
+import model.calc.*;     
+import model.rec.*;     
 
 public class DbAccess {
 	protected Connection conn = null;
@@ -326,9 +324,10 @@ public class DbAccess {
 		switch(type){
 		
 		case "Algorithm" : idModel = dbAlgo.addAlgorithm((Algorithm)model); break; 
+		case "Machine" : idModel = dbMach.addMachine((Machine)model); break; 
 		/*                 =========================================
 		case "Computer" : idModel = dbComp.addComputer((Computer)model); break; 
-		case "Machine" : idModel = dbMach.addMachine((Machine)model); break; 
+	
 		case "Post" : idModel = dbPost.addPost((Post)model); break; 
 		case "Recursive" : idModel = dbRec.addRecursive((Recursive)model); break; 
 		case "Calculus" : idModel = dbCalc.addCalculus((Calculus)model); break; 
@@ -342,9 +341,10 @@ public class DbAccess {
 	public void editModel(String type, Model model) {
 		switch(type){
 		case "Algorithm" : dbAlgo.editAlgorithm((Algorithm)model); break;
+		case "Machine" : dbMach.editMachine((Machine)model); break;
 		/*                               =========================================
 		case "Computer" : dbComp.editComputer((Computer)model); break;
-		case "Machine" : dbMach.editMachine((Machine)model); break;
+
 		case "Post" : dbPost.editPost((Post)model); break;
 		case "Recursive": dbRec.editRecursive((Recursive)model); break;
 		case "Calculus": dbCalc.editCalculus((Calculus)model); break;
@@ -355,9 +355,10 @@ public class DbAccess {
 		int idModel = 0;
 		switch(type){
 		case "Algorithm" : idModel = dbAlgo.newAlgorithm(); break;
+		case "Machine" : idModel = dbMach.newMachine(); break;
 		/*           =========================================
 		case "Computer" : idModel = dbComp.newComputer(); break;
-		case "Machine" : idModel = dbMach.newMachine(); break;
+		
 		case "Post" : idModel = dbPost.newPost(); break;
 		case "Recursive" : idModel = dbRec.newRecursive(); break;
 		case "Calculus" : idModel = dbCalc.newCalculus(); break;
@@ -369,9 +370,10 @@ public class DbAccess {
 	public void deleteModel(String type, Model model) {
 		switch(type){
 		case "Algorithm" : dbAlgo.deleteAlgorithm((Algorithm)model); break;
+		case "Machine" : dbMach.deleteMachine((Machine)model); break;
 		/*         =========================================
 		case "Computer" : dbComp.deleteComputer((Computer)model); break;
-		case "Machine" : dbMach.deleteMachine((Machine)model); break;
+
 		case "Post" : dbPost.deletePost((Post)model); break;
 		case "Recursive" : dbRec.deleteRecursive((Recursive)model); break;
 		case "Calculus" : dbCalc.deleteCalculus((Calculus)model); break;
@@ -383,9 +385,10 @@ public class DbAccess {
 		int idModel = 0;
 		switch(type){
 		case "Algorithm" : idModel = dbAlgo.newAlgorithmAs((Algorithm)model); break;
+		case "Machine" : idModel = dbMach.newMachineAs((Machine)model); break;
 		/*             =========================================
 		case "Computer" : idModel = dbComp.newComputerAs((Computer)model); break;
-		case "Machine" : idModel = dbMach.newMachineAs((Machine)model); break;
+	
 		case "Post" : idModel = dbPost.newPostAs((Post)model); break;
 		case "Recursive" : idModel = dbRec.newRecursiveAs((Recursive)model); break;
 		case "Calculus" : idModel = dbCalc.newCalculusAs((Calculus)model); break;
@@ -437,9 +440,10 @@ public class DbAccess {
 	public void editCommand(String type, Model model, int id, Command cmd){
 		switch(type){
 		case "Algorithm" : dbAlgo.editRule(model.id, id, (Rule)cmd); break;
+		case "Machine": dbMach.editState((Machine)model, id, (State)cmd); break;
 		/*                      =========================================
 		case "Computer" : dbComp.editInstruction(model.id, (Instruction)cmd); break;
-		case "Machine": dbMach.editState((Machine)model, id, (State)cmd); break;
+
 		case "Post" : dbPost.editDerive(model.id, (Derive)cmd); break;
 		case "Recursive" : dbRec.editFunction(model.id, (model.rec.Function)cmd); break;
 		case "Calculus" : dbCalc.editDeclLambda(model.id, (model.calc.LambdaDecl)cmd); break;
@@ -451,9 +455,10 @@ public class DbAccess {
 	public void newCommand(String type, Model model, Command cmd){
 		switch(type){
 		case "Algorithm" : dbAlgo.newRule((Algorithm)model, (Rule)cmd); break;
+		case "Machine": dbMach.newState((Machine)model, (State)cmd); break;
 		/*                   =========================================
 		case "Computer" : dbComp.newInstruction((Computer)model, (Instruction)cmd); break;
-		case "Machine": dbMach.newState((Machine)model, (State)cmd); break;
+
 		case "Post" : dbPost.newDerive((Post)model, (Derive)cmd); break;
 		case "Recursive" : dbRec.newFunction(model.id, (model.rec.Function)cmd); break;
 		case "Calculus" : dbCalc.newDeclLambda(model.id, (model.calc.LambdaDecl)cmd); break;
@@ -465,9 +470,10 @@ public class DbAccess {
 	public void deleteCommand(String type, int idModel, int id, Command cmd){
 		switch(type){
 		case "Algorithm" : dbAlgo.deleteRule(idModel, (Rule)cmd); break;
+		case "Machine": dbMach.deleteState(idModel, id); break;
 		/*                    =========================================
 		case "Computer" : dbComp.deleteInstruction(idModel, (Instruction)cmd); break;
-		case "Machine": dbMach.deleteState(idModel, id); break;
+
 		case "Post" : dbPost.deleteDerive(idModel, (Derive)cmd); break;
 		case "Recursive": dbRec.deleteFunction(idModel, id); break;	
 		case "Calculus": dbCalc.deleteDeclLambda(idModel, (LambdaDecl)cmd); break;	

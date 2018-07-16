@@ -34,7 +34,9 @@ public class PnModel extends BorderPane {
 	public void setEnv(FrMain owner){     // !!!!!!!!!!!!!ref!!!!!!!!!!!!!!!
 		fMain = owner;                        // !!!!!!!!!!!!!ref!!!!!!!!!!!!!!!
 		pDescription.setEnv(fMain);       // !!!!!!!!!!!!!ref!!!!!!!!!!!!!!!
+		//System.out.println("---EndA " );
 		pComTable.setEnv(pComButtons);             // !!!!!!!!!!!!!ref!!!!!!!!!!!!!!!
+		//System.out.println("---EndB " );
 		pComButtons.setEnv(fMain,pDescription,  pComTable); 
 	}  
 	public PnDescription getDescription(){return pDescription;}

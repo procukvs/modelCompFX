@@ -4,6 +4,7 @@ import javafx.beans.property.*;
 import javafx.collections.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.*;
+import javafx.scene.control.TableView.*;
 
 //import model.*;
 import model.rec.*;
@@ -123,6 +124,11 @@ public class FunctionP {
 		table.getColumns().addAll(getNameColumn(), getRankColumn(),
 				                  getIsConstColumn(), getIswfColumn(), getTxBodyColumn(),
 				                  getTxCommColumn(), getIdColumn());
+		TableViewSelectionModel<FunctionP> tsm = table.getSelectionModel();
+		ObservableList<Integer> list = tsm.getSelectedIndices();
+		list.addListener((ListChangeListener.Change<? extends Integer> change) -> {
+			System.out.println("Row selection has changed");
+			});
 		return table;
 	}
 	
@@ -142,6 +148,11 @@ public class FunctionP {
 				
 			}
 			table.getItems().addAll(newL);
+			TableViewSelectionModel<FunctionP> tsm = table.getSelectionModel();
+			ObservableList<Integer> list = tsm.getSelectedIndices();
+			list.addListener((ListChangeListener.Change<? extends Integer> change) -> {
+				System.out.println("Row selection has changed");
+				});
 		}
 	}
 	

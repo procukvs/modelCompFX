@@ -169,6 +169,24 @@ public class StringWork {
 		return res;
 	}
 	
+	public static String transferToString(ArrayList <String> al){
+		String res = "";
+		if ((al !=null) && (al.size() > 0)){
+			res= al.get(0);
+			for(int i=1; i < al.size(); i++) res += ('\n' + al.get(i));
+		}	
+		return res;
+	}
+	
+	public static String transferToString(String[] al){
+		String res = "";
+		if ((al !=null) && (al.length > 0)){
+			res= al[0];
+			for(int i=1; i < al.length; i++) res += ('\n' + al[i]);
+		}	
+		return res;
+	}
+	
 	public static String substitution(String str, TreeMap <Character,String > sm) {
 		String res = "";
 		int i =0;

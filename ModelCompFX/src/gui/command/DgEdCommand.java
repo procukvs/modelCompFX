@@ -27,9 +27,19 @@ public class DgEdCommand extends BorderPane {
 	public DgEdCommand(Stage owner){
 		//сформувати необхідні gui-елементи
 		lWhat = new Label("Edit");
+		lWhat.setStyle("-fx-font: italic bold 16px 'Arial'"); 
+		HBox top = new HBox();
+		top.getChildren().add(lWhat);
+		top.setStyle("-fx-alignment: center");
 		//lWhat.setHorizontalAlignment(lWhat.CENTER);
 		//lWhat.setFont(new Font("Courier",Font.BOLD|Font.ITALIC,16));
-		pCommand = new PnCommand();       
+		pCommand = new PnCommand();   
+		pCommand.setStyle("-fx-padding: 3;" +
+				"-fx-border-style: solid inside;" +
+				"-fx-border-width: 1;" +
+				"-fx-border-insets: 1;" +
+				//"-fx-border-radius: 5;" +
+				"-fx-border-color: blue;");
 		pCommand.setEnv(this);         
 		yes = new Button("Зберегти");
 		test = new Button("Тестувати");
@@ -41,10 +51,11 @@ public class DgEdCommand extends BorderPane {
 		mainBox = new VBox();
 		mainBox.getChildren().add(pCommand);
 		//---------------------------		
-		HBox buttonBox = new HBox();
+		HBox buttonBox = new HBox(5);
 		buttonBox.getChildren().addAll(test, yes, cancel,structure);
 		//---------------------
-		setTop(lWhat);
+		setTop(top); //(lWhat);
+		//this.getTop().setStyle("-fx-alignment: center");
 		setCenter(mainBox);
 		setBottom(buttonBox);
 		
@@ -65,7 +76,7 @@ public class DgEdCommand extends BorderPane {
 	//	if (showTree != null) mainBox.remove(showTree);
 		test.setVisible(type.equals("Recursive")||type.equals("Calculus"));
 		structure.setVisible(type.equals("Recursive"));
-	//	pCommand.setRule(type, model, id, what);
+		pCommand.setRule(type, model, id, what);
 	//	pack();
 	}
 	public Command getCommand() { return command;}

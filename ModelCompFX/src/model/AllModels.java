@@ -82,6 +82,7 @@ public class AllModels {
 	}
 	public void newModel(){
 		//int idM = model.dbNew(type);
+		System.out.println("newModel");
 		int idM = db.newModel(type);
 		if (idM!=0) setAll(idM);
 	}
@@ -129,7 +130,7 @@ public class AllModels {
 		model.dbRenameState(name, name1);
 		setAll(model.id);
 	}
-	/*                                      =========================================
+	                          //     =========================================
 	public String insertModel(int row, String nmModel, String nmFunction){
 		String text = "";
 		switch(type){
@@ -151,7 +152,7 @@ public class AllModels {
 		text = ((Machine)model).insertMachine(section, ins);
 		return text;
 	} 
-	*/
+	
 	
 	public String inputModel(String nmFile){
 		String text = "";
@@ -190,6 +191,7 @@ public class AllModels {
 	}
 	
 	private void setAll(int id){
+		//System.out.println("setAll " + id);
 		list = db.getInfModels(type, section);
 		pos = 0; model = null;
 		if (id > 0){

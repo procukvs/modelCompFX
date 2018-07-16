@@ -7,8 +7,10 @@ import gui.*;
 
 import java.util.*;
 import javafx.scene.layout.*;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.*;
+import javafx.beans.property.*;
 
 public class PnDescription extends VBox {
 	private FrMain fMain;
@@ -38,9 +40,57 @@ public class PnDescription extends VBox {
 	private Label txtComm;
 	private TextField sComm;
 	
-	public PnDescription(boolean isEdit){
-		initialize();		
+	private boolean isNumericSet;
 		
+	public PnDescription(boolean isEdit){
+		initialize();	
+		isNumericSet = true;
+		sName.setEditable(isEdit);//.setEnabled(isEdit);
+		sMain.setEditable(isEdit);//setEnabled(isEdit);
+		sAdd.setEditable(isEdit);//setEnabled(isEdit);
+		//isNumeric.setEditable(isEdit);//setEnabled(isEdit);
+		iRank.setEditable(isEdit);//setEnabled(isEdit);
+		sComm.setEditable(isEdit);//setEnabled(isEdit);
+		
+		sInit.setEditable(isEdit);//setEnabled(isEdit);
+		sFin.setEditable(isEdit);//setEnabled(isEdit);
+		
+		if (isEdit) {
+			// 	встановити слухачів !!!			
+			//sName.addActionListener(new LssName());
+			//sMain.addActionListener(new LssMain());
+			//sAdd.addActionListener(new LssAdd());
+			//isNumeric.addActionListener(new LsisNumeric());
+			//iRank.addActionListener(new LsiRank());
+			//sComm.addActionListener(new LsComm());
+			//sInit.addActionListener(new LssInit());
+			//sFin.addActionListener(new LssFin());
+			sName.setOnAction(e->{if (model == null) showEmpty();
+									else {	if (testAndSave()) {
+													if (type.equals("Machine")) sInit.requestFocus();
+													else sMain.requestFocus();
+										}	
+									}});
+			sInit.setOnAction(e->{if (model == null) showEmpty();
+									else {	if (testAndSave())sFin.requestFocus();
+									}});
+			sFin.setOnAction(e->{ if (model == null) showEmpty();
+									else {	if (testAndSave())sMain.requestFocus();
+									}});
+			isNumeric.setOnAction(e-> testIsNumeric());
+			iRank.setOnAction(e->{if (model == null) showEmpty();
+									else {	if (testAndSave()){
+												if (!type.equals("Computer") && !type.equals("Recursive")) sMain.requestFocus();
+												else sComm.requestFocus();
+												}
+									}});
+			sMain.setOnAction(e->{if (model == null) showEmpty();
+									else { if (testAndSave())sAdd.requestFocus();
+									}});
+			sAdd.setOnAction(e->{if (testAndSave())sComm.requestFocus();});
+			sComm.setOnAction(e->{if (model == null) showEmpty(); else {testAndSave();}});
+		}
+		else isNumeric.setOnAction(e-> isNumeric.setSelected(isNumericSet));//.selectedProperty().bind(isNumericSet);
 		
 	}
 	
@@ -48,39 +98,55 @@ public class PnDescription extends VBox {
 		//сформувати необхідні gui-елементи 
 		txtAlgo = new Label("Алгоритм ");
 		sName = new TextField();
+		sName.setPrefColumnCount(9);
 		txtNumb = new Label("--------");
 		
 		txtInit = new Label("Початковий стан");
 		sInit = new TextField();
+		sInit.setPrefColumnCount(3);
 		txtFin = new Label("Заключний стан");
 		sFin = new TextField();
+		sFin.setPrefColumnCount(3);
 		
 		txtNumeric = new Label("Функція ");
 		isNumeric = new CheckBox();
 		isNumeric.setSelected(true);
 		txtRank = new Label("Арність");
 		iRank = new TextField();
+		iRank.setPrefColumnCount(1);
 		
 		txtMain = new Label("Алфавіт основний");
 		sMain = new TextField(); 
+		sMain.setPrefColumnCount(6);
 		txtAdd = new Label("Алфавіт додатковий");
 		sAdd = new TextField(); 
+		sAdd.setPrefColumnCount(6);
 		
 		txtComm = new Label("Опис алгоритму");
 		sComm = new TextField(); 
+		sComm.setPrefColumnCount(40);
 		
 		//=================================
 		// формуємо розміщення
 		//---------------------------
-		HBox headBox = new HBox();
-		headBox.getChildren().addAll(txtAlgo,sName,txtNumb,txtNumeric, isNumeric, txtRank, iRank);
-		HBox alfaBox = new HBox();
+		HBox headBox = new HBox(5);
+		headBox.getChildren().addAll(txtAlgo, sName, txtNumb, txtInit, sInit, txtFin, sFin,
+				                     txtNumeric, isNumeric, txtRank, iRank);
+		headBox.setAlignment(Pos.CENTER);
+		HBox alfaBox = new HBox(5);
 		alfaBox.getChildren().addAll(txtMain,sMain,txtAdd,sAdd);
-		HBox commBox = new HBox();	
+		alfaBox.setAlignment(Pos.CENTER);
+		HBox commBox = new HBox(5);	
 		commBox.getChildren().addAll(txtComm,sComm);	
+		commBox.setAlignment(Pos.CENTER);
 		getChildren().addAll(headBox,alfaBox, commBox);
+		this.setSpacing(3);
+		txtInit.setVisible(false);
+		sInit.setVisible(false);
+		txtFin.setVisible(false);
+		sFin.setVisible(false);
 		
-		
+
 	}
 	public void setEnv(FrMain owner) {
 		//this.db = db;
@@ -90,6 +156,7 @@ public class PnDescription extends VBox {
 		this.env = env;
 		type = env.getType();
 	    model = env.getModel();
+	    
 		boolean isVisible = type.equals("Machine");
 		boolean isComputer = type.equals("Computer");
 		isVisibleMany = !type.equals("Recursive") && !type.equals("Calculus");
@@ -98,24 +165,25 @@ public class PnDescription extends VBox {
 		txtComm.setText("Опис " + Model.title(type, 3));
 	   
 	    
-	    txtMain.setVisible(isVisibleMany && !isComputer);
-	    sMain.setVisible(isVisibleMany && !isComputer);
-	    txtAdd.setVisible(isVisibleMany && !isComputer);
-	    sAdd.setVisible(isVisibleMany && !isComputer);
-	    txtNumeric.setVisible(isVisibleMany && !isComputer);
-	    isNumeric.setVisible(isVisibleMany && !isComputer);
+	    txtMain.setVisible(isVisibleMany && !isComputer); txtMain.setManaged(isVisibleMany && !isComputer);
+	    sMain.setVisible(isVisibleMany && !isComputer); sMain.setManaged(isVisibleMany && !isComputer);
+	    txtAdd.setVisible(isVisibleMany && !isComputer); txtAdd.setManaged(isVisibleMany && !isComputer);
+	    sAdd.setVisible(isVisibleMany && !isComputer); sAdd.setManaged(isVisibleMany && !isComputer);
+	    txtNumeric.setVisible(isVisibleMany && !isComputer); txtNumeric.setManaged(isVisibleMany && !isComputer);
+	    isNumeric.setVisible(isVisibleMany && !isComputer);  isNumeric.setManaged(isVisibleMany && !isComputer);
 	    
-		txtRank.setVisible(isVisibleMany);
-		iRank.setVisible(isVisibleMany);
+		txtRank.setVisible(isVisibleMany); txtRank.setManaged(isVisibleMany);
+		iRank.setVisible(isVisibleMany); iRank.setManaged(isVisibleMany);
 
-		txtInit.setVisible(isVisible);
-		sInit.setVisible(isVisible);
-		txtFin.setVisible(isVisible);
-		sFin.setVisible(isVisible);
+		txtInit.setVisible(isVisible); txtInit.setManaged(isVisible);
+		sInit.setVisible(isVisible); sInit.setManaged(isVisible);
+		txtFin.setVisible(isVisible); txtFin.setManaged(isVisible);
+		sFin.setVisible(isVisible); sFin.setManaged(isVisible);
 		
 		if (model == null) showEmpty( );
 		else showModel();
 	}
+	
 	private void showModel() {
 		sName.setText(model.name);
 		txtNumb.setText("Номер " + model.id);
@@ -123,12 +191,13 @@ public class PnDescription extends VBox {
 		sMain.setText(model.getMain());
 		sAdd.setText(model.getAdd());
 		isNumeric.setSelected(model.getIsNumeric());
+		isNumericSet =model.getIsNumeric();
 		iRank.setText(((Integer)model.getRank()).toString());
 		//System.out.println("PnDescription:showModel:model.getIsNumeric()" + model.getIsNumeric() +" isVisibleMany "+isVisibleMany);
-		txtRank.setVisible(model.getIsNumeric() && isVisibleMany);
-		iRank.setVisible(model.getIsNumeric() && isVisibleMany);
-		sInit.setText(model.getInit());
-		sFin.setText(model.getFin());
+		txtRank.setVisible(model.getIsNumeric() && isVisibleMany); txtRank.setManaged(model.getIsNumeric() && isVisibleMany);
+		iRank.setVisible(model.getIsNumeric() && isVisibleMany); iRank.setManaged(model.getIsNumeric() && isVisibleMany);
+		sInit.setText(model.getInit()); 
+		sFin.setText(model.getFin()); 
 	}
 	
 	private void showEmpty() {
@@ -140,9 +209,27 @@ public class PnDescription extends VBox {
 		sAdd.setText("");
 		isNumeric.setSelected(true);
 		iRank.setText("2");
-		txtRank.setVisible(isVisibleMany);
-		iRank.setVisible(isVisibleMany);
+		txtRank.setVisible(isVisibleMany); txtRank.setManaged(isVisibleMany);
+		iRank.setVisible(isVisibleMany); iRank.setManaged(isVisibleMany);
 		sComm.setText("");
+	}
+	
+	private void testIsNumeric(){
+		if (model != null){
+			if(isNumeric.isSelected()){
+				String tempAdd = sAdd.getText(); 
+				tempAdd = StringWork.isAlfa("|#", tempAdd);
+				tempAdd = tempAdd + StringWork.isAlfa(tempAdd +"|#", sMain.getText());
+				sMain.setText("|#");
+				sAdd.setText(tempAdd);	
+			}
+			if (testAndSave()){
+				txtRank.setVisible(isNumeric.isSelected());
+				iRank.setVisible(isNumeric.isSelected());
+				if(isNumeric.isSelected()) iRank.requestFocus(); 
+				else sComm.requestFocus();
+			}
+		} else showEmpty();
 	}
 	
 	// перевіряє наявність змін та їх коректність  
@@ -239,14 +326,14 @@ public class PnDescription extends VBox {
 		 		for(int i=0; i<mess.size();i++) aMess[i]=mess.get(i);
 		 		String ms = "";
 		 		for(int i=0; i<mess.size();i++) ms += mess.get(i) +"\n";
-		 		
+		 		DialogWork.showAlertError("Error", ms).showAndWait();
+		 		/*
 		 		Alert alert = new Alert(AlertType.ERROR);
-		 		 
 		 		alert.setTitle("Error alert");
-		 		alert.setHeaderText("Can not add user");
+		 		alert.setHeaderText(null);
 		 		alert.setContentText(ms);
-		 		 
 		 		alert.showAndWait();
+		 		*/
 		 		
 		 		//JOptionPane.showMessageDialog(PnDescription.this,aMess);
 		 		showModel();

@@ -185,6 +185,7 @@ public class Model {
 		
 	// знаходить  порядковий номер команди за іі номером-ключом в БД id
 	public int findCommand(int id) {
+		//System.out.println("Model.findComand id=" + id);
 		int cnt = -1;
 		if ((program != null) && (program.size() > 0)) {
 			for(int i = 0; i < program.size(); i++ )

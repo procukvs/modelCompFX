@@ -12,11 +12,9 @@ import model.*;
 
 public class Main extends Application {
 	private DbAccess db;
-	//private FrMain fMain;                         =========================================
-	//private static AllModels env=null;            =========================================
 	// Cтворює всі об"єкти, відкриває (ініціалізує) ресурси
-	// Запускає gui
-	// Закінсує роботи (метод andWork)
+	// Запускає gui (метод start: викликається в Application.launch)
+	// Закінчує роботи (метод stop)
 	
 	public static void main(String[] args) {
 		Application.launch(args);
@@ -33,6 +31,7 @@ public class Main extends Application {
 			// Cтворює всі об"єкти, відкриває (ініціалізує) ресурси
 			fMain = new FrMain(stage, db); 
 			env = AllModels.getAllModels(db, fMain); 
+			//System.out.println("---Begin " );
 			fMain.setEnv(db,env);
 			scene = new Scene(fMain,800,500);
 			stage.setScene(scene);
@@ -55,53 +54,4 @@ public class Main extends Application {
 			 if(rawParams.get(0).equals("Teacher")) Parameter.setRegime("teacher");
 		}
 	}
-	/*                =========================================
-	Main(){
-		db = DbAccess.getDbAccess();
-		//====================
-		
-	    if (db.connectionDb("Model.db")) { 
-	    	if (Parameters.getRegime().equals("teacher")) db.setParameters();
-	    	System.out.println("Forming GUI-- " + "version " + Parameters.getVersion() + ": " + Parameters.getRegime() + "..");
-	    	// Cтворює всі об"єкти, відкриває (ініціалізує) ресурси
-			fMain = new FrMain(db); 
-			env = AllModels.getAllModels(db, fMain); 
-			fMain.setEnv(db,env);
-			// Запускає gui
-			fMain.setVisible(true);
-	    } 
-	    else System.out.println("No connection to DB Model.db -- version Teacher..");
-	}
-	*/
-	
-	/*
-	public static void endWork(){
-	   // закриває всі ресурси і закінчує роботу
-	   	//db.disConnect();  
-        //System.exit(0);
-		System.out.println("stop application");
-	}
-	*/
-	
-	/*                         =========================================
-	public static void main(String[] args) {
-		if (args.length > 0) {
-			 if(args[0].equals("Teacher")) Parameters.setRegime("teacher");
-		}
-		// Вікно створюємо в потоці обробки подій.
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run(){
-				// підключення ще ОДНОГО зовнішнього вигляду !!!!
-				try {
-					UIManager.setLookAndFeel(new com.incors.plaf.kunststoff.KunststoffLookAndFeel());
-				}
-				catch (Exception ex) { System.err.println(ex);}
-				new Main();
-			}
-		});
-	}
-	*/
-
-	
-
 }
